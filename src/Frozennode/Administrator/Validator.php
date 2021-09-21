@@ -131,14 +131,21 @@ class Validator extends \Illuminate\Validation\Validator {
 		return is_dir($value);
 	}
 
-	/**
-	 * Validates that an item is an array
-	 */
-	public function validateArray($attribute, $value)
-	{
-		return is_array($value);
-	}
+    /**
+     * Explode the rules into an array of rules.
+     *
+     * @param  string|array  $rules
+     * @return array
+     */
+    protected function explodeRules($rules)
+    {
+        foreach ($rules as $key => &$rule)
+        {
+            $rule = (is_string($rule)) ? explode('|', $rule) : $rule;
+        }
 
+        return $rules;
+    }
 	/**
 	 * Validates that an item is an array
 	 */
@@ -173,13 +180,7 @@ class Validator extends \Illuminate\Validation\Validator {
 		return is_callable($value);
 	}
 
-	/**
-	 * Validate that an attribute is a string.
-	 */
-	protected function validateString($attribute, $value)
-	{
-		return is_string($value);
-	}
+
 
 	/**
 	 * Validates that an item is either a string or callable

@@ -1,5 +1,6 @@
 <?php namespace Frozennode\Administrator;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -645,7 +646,9 @@ class AdminController extends Controller {
 			$fieldFactory = app('admin_field_factory');
 		} catch (\ReflectionException $e) {
 			return null;
-		}
+		} catch (BindingResolutionException $e) {
+            return null;
+        }
 		if (array_key_exists('form_request', $config->getOptions())) {
 			try {
 				$model = $config->getFilledDataModel($request, $fieldFactory->getEditFields(), $request->id);

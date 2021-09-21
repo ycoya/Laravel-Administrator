@@ -5,6 +5,7 @@ use Frozennode\Administrator\Validator;
 use Frozennode\Administrator\Config\ConfigInterface;
 use Illuminate\Database\DatabaseManager as DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Column {
 
@@ -153,7 +154,7 @@ class Column {
 		$options['sort_field'] = $this->validator->arrayGet($options, 'sort_field', $options['column_name']);
 
 		//if the supplied item is an accessor, make this unsortable for the moment
-		if (method_exists($model, camel_case('get_'.$options['column_name'].'_attribute')) && $options['column_name'] === $options['sort_field'])
+		if (method_exists($model, Str::camel('get_'.$options['column_name'].'_attribute')) && $options['column_name'] === $options['sort_field'])
 		{
 			$options['sortable'] = false;
 		}
@@ -165,7 +166,7 @@ class Column {
 		}
 
 		//now we do some final organization to categorize these columns (useful later in the sorting)
-		if (method_exists($model, camel_case('get_'.$options['column_name'].'_attribute')) || $select)
+		if (method_exists($model, Str::camel('get_'.$options['column_name'].'_attribute')) || $select)
 		{
 			$options['is_computed'] = true;
 		}
