@@ -45,7 +45,13 @@ class Menu {
 
 		if (!$subMenu)
 		{
-			$subMenu = $this->config->get('administrator.menu');
+            $partialNameMenu = $this->config->get('administrator.partial_name_menu');
+            $partialNameMenu = is_callable($partialNameMenu) ? $partialNameMenu() : $partialNameMenu;
+            if (!empty($partialNameMenu)){
+                 $subMenu = $this->config->get('administrator.menu_' .$partialNameMenu) ?? $this->config->get('administrator.menu');
+            }else{
+                $subMenu = $this->config->get('administrator.menu');
+            }
 		}
 
 		//iterate over the menu to build the return array of valid menu items
